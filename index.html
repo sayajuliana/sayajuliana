@@ -8,16 +8,18 @@
     <title>Document</title>
 </head>
 <body>
+
     <fieldset>
         <label for="">Creación de tablero</label><br>
         <label for="">Ingrese columnas</label>
-        <input id="txt-columnas" type="number">
+        <input id="txt-columns" type="number">
         <label for="">Ingrese filas</label>
-        <input id="txt-filas" type="number">
-        <button id="btn-crear" onclick="dibujarTablero ()">Crear</button>
-        <button id="btn-limpiar">Limpiar</button>
-    </fieldset>   
-    <div id="tablero">        
+        <input id="txt-row" type="number">
+        <button type="submit" id="btn-create" onclick="paintTable()"> Crear </button>
+       
+    </fieldset>  
+
+    <div id="table1">        
     </div>
 <!-- <script src="/prueba.js"></script> -->
 <script src="ajedrezReto.js"></script>
