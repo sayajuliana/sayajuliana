@@ -3,9 +3,6 @@ const numberColumns = document.getElementById('txt-columns');
 const numberRow = document.getElementById('txt-row');
 const btnCreate = document.getElementById('btn-create');
 
-
-/*btnCrear.addEventListener('click',dibujarTablero);*/
-
 //Dibujar el tablero
 function paintTable() {
     const column = Number(numberColumns.value);
@@ -45,13 +42,16 @@ function paintTable() {
             const col = document.createElement('div');
             col.classList.add('cell');
             row.appendChild(col);
-            arrDrawers[i][j]=col.innerHTML;
+            arrDrawers[i][j]=col;
             if ((i+j)%2 != 0){
                 col.style.backgroundColor = '#01444d';
             } else {
                 col.style.background = '#d7f6fa'
             }
-            
+            arrDrawers[i][j].innerHTML= changeToFigures(arrDrawers2[i][j]);
+            arrDrawers[i][j].addEventListener("click", function ( ) {
+               moves (arrDrawers, arrDrawers2, i, j);
+            })
         }
         
     }
@@ -61,10 +61,9 @@ function paintTable() {
 
 function initialBoard (f,c){
 
-    
     let t = new Array(f);
     console.log (f);
-     
+    
     for (let i = 0; i < f; i++) {
        t[i] = new Array(c).fill(" ");
     }
@@ -89,14 +88,51 @@ function initialBoard (f,c){
         t[f-1][(c/2)-2+3*i]= "W-B";
     }
 
-    t[0][(c/2)-1]= "B-Q";
-    t[f-1][(c/2)-1]= "W-Q";
-    t[0][(c/2)]= "B-K";
-    t[f-1][(c/2)]= "W-K";
+    t[0][(c/2)-1]= "B-K";
+    t[f-1][(c/2)-1]= "W-K";
+    t[0][(c/2)]= "B-Q";
+    t[f-1][(c/2)]= "W-Q";
 
     return (t);
      
 }
+//Dibujar fichas en el tablero
+function changeToFigures(array){
+    switch (array) {
+        case 'B-P': case 'W-P': if(array == 'B-P'){return'♟'} return '♙'
+        case 'B-T': case 'W-T': if(array == 'B-T'){return'♜'} return '♖'
+        case 'B-N': case 'W-N': if(array == 'B-N'){return'♞'} return '♘'
+        case 'B-B': case 'W-B': if(array == 'B-B'){return'♝'} return '♗'
+        case 'B-K': case 'W-K': if(array == 'B-K'){return'♛'} return '♕'
+        case 'B-Q': case 'W-Q': if(array == 'B-Q'){return'♚'} return '♔'
+        default:return ' '
+    }
+}
+
+//Seleccionar fichas 
+let selectPieces = {row: 0, col:0, piece:0}
 
 
+function moves(arrDrawers, pieces, i, j) {
+    if((pieces[i][j].split(" ").join("").length > 0) && (selectPieces["piece"]== 0)){
+        
+        selectPieces["row"] = i;
+        selectPieces["col"] = j; 
+        selectPieces["piece"] = pieces[i][j];
+        arrDrawers[i][j].style.backgroundColor = "#af87e6"; 
 
+        console.log (selectPieces);
+        
+    }
+
+    if (arrDrawers[selectPieces["row"]][selectPieces["col"]].style.backgroundColor == "#af87e6"){
+       if (pieces[i][j].split(" ").join("").length == 0){
+           
+            arrDrawers[selectPieces["row"]][selectPieces["col"]].innerHTML = " ";
+            arrDrawers2[selectPieces["row"]][selectPieces["col"]]  = " ";
+            arrDrawers2[i][j] = selectPieces["piece"];  
+            arrDrawers[i][j].innerHTML = changeToFigures(selectPieces["piece"]);
+       }
+      
+    }
+}
